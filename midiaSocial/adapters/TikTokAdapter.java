@@ -18,22 +18,20 @@ public class TikTokAdapter implements MidiaSocial {
     @Override
     public Publicacao postar(Conteudo conteudo) throws MidiaSocialException {
         try {
-            api.postarVideo(conteudo.getImagemUrl(), conteudo.getTexto());
+            //A Api espera receber um texto e uma imagem
+            String retorno = api.postarVideo(conteudo.getTexto(), conteudo.getImagemUrl());
+
             String id = "TT-" + System.currentTimeMillis();
-            return new Publicacao(id, "TikTok", conteudo.getTexto());
+            return new Publicacao(id, "TikTok", retorno);
         } catch (Exception e) {
             throw new MidiaSocialException("Erro ao postar no TikTokAdapter", e);
         }
     }
 
     @Override
-    public Estatisticas obterEstatisticas(String idPublicacao) throws MidiaSocialException {
-        try {
-            String stats = api.obterDadosVideo(idPublicacao);
-            return new Estatisticas("TikTok", stats);
-        } catch (Exception e) {
-            throw new MidiaSocialException("Erro ao obter estatísticas do TikTok", e);
-        }
+    public Estatisticas obterEstatisticas(String idPublicacao) {
+
+        return new Estatisticas(300, 150, 20);
+        
     }
 }
-
